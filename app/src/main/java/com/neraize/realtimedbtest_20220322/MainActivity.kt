@@ -2,10 +2,12 @@ package com.neraize.realtimedbtest_20220322
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.neraize.realtimedbtest_20220322.adapters.ChattingRecyclerAdapter
 import com.neraize.realtimedbtest_20220322.datas.ChattingData
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
@@ -16,7 +18,8 @@ class MainActivity : BaseActivity() {
 
     var messageCount =0L // db에 저장된 채팅 갯수를 담을 변수. Long 타입으로 저장
 
-    val mChattingList:ArrayList<ChattingData>()
+    val mChattingList = ArrayList<ChattingData>()
+    lateinit var mAdapter:ChattingRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,8 @@ class MainActivity : BaseActivity() {
                         snapshot.children.last().child("createdAt").value.toString()
                     )
                 )
+
+                mAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -76,5 +81,9 @@ class MainActivity : BaseActivity() {
 
         // test항목에, "Hello World!" 기록해보기
         testRef.setValue("Hello World")
+
+        mAdapter = ChattingRecyclerAdapter(mContext, mChattingList)
+        chattingRecyclerView.adapter = mAdapter
+        chattingRecyclerView.layoutManager =  LinearLayoutManager(mContext)
     }
 }
