@@ -2,6 +2,7 @@ package com.neraize.realtimedbtest_20220322
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,5 +19,13 @@ class MainActivity : BaseActivity() {
 
     override fun setValues() {
 
+        // DB 연결 -> 값 기록 연습
+        val db = FirebaseDatabase.getInstance("https://realtimedbtest-20220322-99565-default-rtdb.asia-southeast1.firebasedatabase.app/")  // 싱가폴 db주소 대입
+
+        // DB의 하위 정보(Reference) 설정
+        val testRef = db.getReference("test")
+
+        // test항목에, "Hello World!" 기록해보기
+        testRef.setValue("Hello World")
     }
 }
